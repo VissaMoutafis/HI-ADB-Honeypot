@@ -1,1 +1,11 @@
-placeholder
+services:
+  emulator:
+    image: budtmo/docker-android:emulator_11.0
+    environment:
+      - EMULATOR_DEVICE="Samsung Galaxy S10"
+      - WEB_VNC=true
+    ports:
+      - 6080:6080
+      - 5555:5555
+    devices:
+      - "/dev/kvm"
