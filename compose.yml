@@ -1,4 +1,6 @@
+version: 0.0.1
 services:
+  container-monitor:
   emulator:
     image: budtmo/docker-android:emulator_11.0
     environment:
