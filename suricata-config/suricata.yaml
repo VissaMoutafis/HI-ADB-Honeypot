@@ -1,0 +1,57 @@
+%YAML 1.1
+---
+
+default-log-dir: /var/log/suricata
+default-rule-path: /etc/suricata/rules
+
+listenmode: nfqueue
+
+vars:
+  address-groups:
+    HOME_NET: "[0.0.0.0/0]"
+
+outputs:
+  - fast:
+      enabled: yes
+      filename: fast.log
+      append: yes
+      types:
+          - alert:
+              payload: yes
+  # - eve-log:
+  #     enabled: yes
+  #     filetype: regular #regular|syslog|unix_dgram|unix_stream|redis
+  #     filename: eve.json
+  # - syslog:
+  #     enabled: yes
+  #     facility: local5
+  #     level: alert
+
+community-id: true
+community-id-seed: 0
+
+af-packet:
+  - interface: eth0
+
+defrag:
+  memcap: 67108864
+
+stream:
+  memcap: 67108864
+
+http:
+  memcap: 67108864
+
+decoder:
+  events:
+    - ssh
+    - dns
+    - http
+    - tls
+
+rule-files:
+  - suricata.rules
+
+# Directly define a custom rule for port 5555
+custom-rule-files:
+  - custom.rules

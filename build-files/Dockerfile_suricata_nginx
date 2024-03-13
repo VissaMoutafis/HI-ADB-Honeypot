@@ -1,0 +1,12 @@
+FROM nginx:latest
+
+# surricata install
+RUN apt update 
+
+RUN apt install -y suricata
+
+COPY suricata-config /etc/suricata
+
+
+COPY ./docker_entrypoint.sh /docker-entrypoint.sh
+RUN chmod u+x /docker-entrypoint.sh

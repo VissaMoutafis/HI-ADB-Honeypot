@@ -1,82 +1,58 @@
-version: "3"
+version: "3.7"
 
 services:
-  me: 
-    image: ubuntu
-    command: tail -f /dev/null
-    networks:
-       - backend_network
+  # suricata:
+  #   container_name: ips
+  #   hostname: ips
+  #   image: jasonish/suricata:latest
+  #   networks:
+  #     - custom_network
+  #   cap_add:
+  #     - net_admin
+  #     - net_raw
+  #     - sys_nice
+  #   volumes:
+      # - ./suricata-config:/etc/suricata
+      # - ./suricata-logs:/var/log/suricata
+  #   command: ["suricata", "-c", "/etc/suricata/suricata.yaml", "-i", "eth0"]
+
   nginx:
-    image: nginx:latest
+    container_name: rev-proxy
+    # image: nginx:latest
+    build:
+      context: .
+      dockerfile: build-files/Dockerfile_suricata_nginx
     ports:
-      - "5555:5555"
-      - "6080:6080"
+      - 5555:5555
     networks:
-       - backend_network
+       - custom_network
     environment:
       - NGINX_ENTRYPOINT_QUIET_LOGS=1
-    depends_on:
-      - emulator-1
-      - emulator-2
+      - NGINX_REAL_IP_HEADER=proxy_protocol
+      - NGINX_REAL_IP_RECURSIVE=on
     volumes:
+      - ./suricata-logs:/var/log/suricata
+      # - ./suricata-config:/etc/suricata
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    # depends_on:
+    #   - suricata
     restart: always
-  # sw-1:
-  #   image: nginx
-  #   networks:
-  #     - backend_network
-  #   environment:
-  #     - NGINX_ENTRYPOINT_QUIET_LOGS=1
-  #   # deploy:
-  #   #   mode: replicated
-  #   #   endpoint_mode: vip
-  #   #   replicas: 3
-  # sw-2:
-  #   image: nginx
-  #   networks:
-  #     - backend_network
-  #   environment:
-  #     - NGINX_ENTRYPOINT_QUIET_LOGS=1
-  # sw-3:
-  #   image: nginx
-  #   networks:
-  #     - backend_network
-  #   environment:
-  #     - NGINX_ENTRYPOINT_QUIET_LOGS=1
-  # sw-4:
-  #   image: nginx
-  #   networks:
-  #     - backend_network
-  #   environment:
-  #     - NGINX_ENTRYPOINT_QUIET_LOGS=1
-  # sw-5:
-  #   image: nginx
-  #   networks:
-  #     - backend_network
-  #   environment:
-  #     - NGINX_ENTRYPOINT_QUIET_LOGS=1
-  emulator-1:
-    image: budtmo/docker-android:emulator_11.0
-    environment:
-      - EMULATOR_DEVICE="Samsung Galaxy S10"
-      - WEB_VNC=true
-    networks:
-       - backend_network
-    devices:
-      - "/dev/kvm"
-  emulator-2:
-    image: budtmo/docker-android:emulator_11.0
-    environment:
-      - EMULATOR_DEVICE="Samsung Galaxy S10"
-      - WEB_VNC=true
-    networks:
-       - backend_network
-    devices:
-      - "/dev/kvm"
 
+  emulator-1:
+    image: us-docker.pkg.dev/android-emulator-268719/images/30-google-x64:30.1.2
+    container_name: android-container
+    environment:
+      - ADBKEY=$(cat ~/.android/adbkey)
+    networks:
+       - custom_network
+    devices:
+      - "/dev/kvm"
+    depends_on:
+      - nginx
 
 networks:
-  backend_network:
+  custom_network:
     driver: bridge
+    
 
   

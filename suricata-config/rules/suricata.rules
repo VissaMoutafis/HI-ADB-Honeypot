@@ -1,0 +1,5 @@
+# Custom rule to allow traffic on port 5555
+alert tcp any any -> any 5555 (msg:"Allow traffic on port 5555 "; flow:to_server, established; sid:1000002; rev:1;)
+
+# drop all traffic that is not on 5555
+alert tcp any any -> any !5555 (msg:"Drop traffic on any port except 5555"; classtype: misc-attack; target: dest_ip; sid:1000001;))
