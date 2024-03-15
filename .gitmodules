@@ -1,6 +1,0 @@
-[submodule "dockerpot"]
-	path = dockerpot
-	url = https://github.com/VissaMoutafis/dockerpot
-[submodule "docker-android"]
-	path = docker-android
-	url = https://github.com/VissaMoutafis/docker-android
