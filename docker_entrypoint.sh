@@ -47,9 +47,14 @@ if [ "$1" = "nginx" ] || [ "$1" = "nginx-debug" ]; then
     fi
 fi
 
+# set up ip tables
+echo "Setting up iptables...."
+iptables -I INPUT -j NFQUEUE --queue-num 0
+iptables -I OUTPUT -j NFQUEUE --queue-num 0
+
 # run suricata
 echo "Starting suricata...."
-/usr/bin/suricata -c /etc/suricata/suricata.yaml -i eth0 &
+/usr/bin/suricata -c /etc/suricata/suricata.yaml -q 0 &
 exec "$@"
 
 

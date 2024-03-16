@@ -3,7 +3,7 @@ FROM nginx:latest
 # surricata install
 RUN apt update 
 
-RUN apt install -y suricata
+RUN apt install -y suricata iptables
 
 COPY suricata-config /etc/suricata
 

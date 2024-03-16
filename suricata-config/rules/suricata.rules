@@ -1,5 +1,5 @@
-# Custom rule to allow traffic on port 5555
-alert tcp any any -> any 5555 (msg:"Allow traffic on port 5555 "; flow:to_server, established; sid:1000002; rev:1;)
+# Custom rule to allow and alert inbound traffic on port 5555
+alert tcp any any -> $HOME_NET 5555 (msg:"EXTERNAL_NET:any -> $HOME_NET:5555"; flow:to_server, established; priority:1; sid:1000001;)
 
-# drop all traffic that is not on 5555
-alert tcp any any -> any !5555 (msg:"Drop traffic on any port except 5555"; classtype: misc-attack; target: dest_ip; sid:1000001;))
+# drop all outbound traffic
+# drop ip $HOME_NET any -> $EXTERNAL_NET any (msg:"Drop all traffic from HOME_NET to EXTERNAL_NET"; priority:1; classtype: bad-unknown; sid:1000002;)
