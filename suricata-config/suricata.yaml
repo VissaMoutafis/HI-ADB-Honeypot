@@ -12,6 +12,8 @@ vars:
     EXTERNAL_NET: "!$HOME_NET"
 
 outputs:
+  - console:
+      enabled: yes
   - fast:
       enabled: yes
       filename: fast.log
@@ -48,7 +50,7 @@ community-id: true
 community-id-seed: 0
 
 af-packet:
-  - interface: eth0
+  - interface: br-android
 
 defrag:
   memcap: 67108864
@@ -68,11 +70,6 @@ decoder:
 
 rule-files:
   - suricata.rules
-
-# Directly define a custom rule for port 5555
-custom-rule-files:
-  - custom.rules
-
 
 
 # Stream engine settings. Here the TCP stream tracking and reassembly
