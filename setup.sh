@@ -25,8 +25,6 @@ setup_docker() {
 }
 
 setup_suricata() {
-    config_yaml="$1"
-
     echo "Installing Suricata IDS..."
     echo | sudo add-apt-repository ppa:oisf/suricata-stable
     sudo apt install suricata jq -y
@@ -74,13 +72,12 @@ start_docker() {
     docker compose up -d --build
 }
 
+
 # check if docker and docker-compose is installed
 if ! [ -x "$(command -v docker)" ]; then
     echo "Docker is not installed. Installing Docker..."
     setup_docker
 fi
-
 start_docker
-
-setup_suricata $1
+setup_suricata
 
