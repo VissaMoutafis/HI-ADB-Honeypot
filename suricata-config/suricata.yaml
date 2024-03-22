@@ -36,6 +36,10 @@ outputs:
             append: yes
             payload-printable: yes
             payload: yes
+        - flow:
+            enabled: yes
+            filename: eve.json
+            append: yes
   - tcp-data:
       enabled: yes
       append: yes

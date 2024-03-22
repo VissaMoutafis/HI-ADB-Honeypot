@@ -9,10 +9,6 @@ services:
     networks:
       br-android:
         ipv4_address: 192.168.22.2
-    # cap_add:
-    #   - NET_ADMIN
-    #   - NET_RAW
-    #   - SYS_NICE
     environment:
       - NGINX_ENTRYPOINT_QUIET_LOGS=1
       - NGINX_REAL_IP_HEADER=proxy_protocol
@@ -23,7 +19,8 @@ services:
 
   emulator-1:
     image: us-docker.pkg.dev/android-emulator-268719/images/30-google-x64:30.1.2
-    container_name: android-container
+    container_name: android-container-1
+    hostname: emulator-1
     environment:
       - ADBKEY=$(cat ~/.android/adbkey)
     networks:
@@ -33,6 +30,38 @@ services:
       - "/dev/kvm"
     depends_on:
       - nginx
+
+
+  emulator-2:
+    image: us-docker.pkg.dev/android-emulator-268719/images/30-google-x64:30.1.2
+    container_name: android-container-2
+    hostname: emulator-2
+    environment:
+      - ADBKEY=$(cat ~/.android/adbkey)
+    networks:
+      br-android:
+        ipv4_address: 192.168.22.4
+    devices:
+      - "/dev/kvm"
+    depends_on:
+      - nginx
+
+
+  restarter:
+    image: docker:cli
+    restart: unless-stopped
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+    entrypoint: ["/bin/sh","-c"]
+    depends_on:
+      - emulator-1
+      - emulator-2
+    command:
+      - |
+        while true; do
+          sleep 1800
+          docker restart android-container-1 android-container-2
+        done
+
 
 networks:
   br-android:
