@@ -20,7 +20,7 @@ setup_docker() {
 
     echo "Adding user to docker group..."
     # check if docker group exists
-    if [ $(getent group admin) ]; then
+    if [ $(getent group docker) ]; then
         echo "docker group exists."
     else
         echo "docker group does not exist... creating docker group."
