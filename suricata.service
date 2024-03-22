@@ -7,8 +7,8 @@ Documentation=man:suricata(8) man:suricatasc(8)
 [Service]
 User=root
 Type=simple
-ExecStart=
-ExecStart=/usr/bin/suricata -q 0 -c /etc/suricata/suricata.yaml --pidfile /var/run/suricata.pid -D
+PIDFILE=/var/run/suricata.pid
+ExecStart=/usr/bin/suricata -q 0 -c /etc/suricata/suricata.yaml
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill $MAINPID
 

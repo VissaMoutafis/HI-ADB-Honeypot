@@ -19,7 +19,13 @@ setup_docker() {
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
     echo "Adding user to docker group..."
-    sudo groupadd docker
+    # check if docker group exists
+    if [ $(getent group admin) ]; then
+        echo "docker group exists."
+    else
+        echo "docker group does not exist... creating docker group."
+        sudo groupadd docker
+    fi
     sudo usermod -aG docker $USER
     newgrp docker
 }

@@ -35,6 +35,7 @@ outputs:
             filename: eve.json
             append: yes
             payload-printable: yes
+            payload: yes
   - tcp-data:
       enabled: yes
       append: yes
