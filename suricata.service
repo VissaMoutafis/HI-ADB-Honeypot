@@ -3,20 +3,14 @@ Description=Suricata IDS/IDP daemon
 After=network.target
 Requires=network.target
 Documentation=man:suricata(8) man:suricatasc(8)
-Documentation=https://redmine.openinfosecfoundation.org/projects/suricata/wiki
 
 [Service]
-User=suri
+User=root
 Type=simple
-Environment=CFG=/etc/suricata/suricata.yaml PID=/var/run/suricata.pid
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW
-PIDFile=/var/run/suricata.pid
-ExecStart=/usr/bin/suricata --user=suri --group=suricata -q 0 -c $CFG --pidfile /var/run/suricata.pid -D
+ExecStart=
+ExecStart=/usr/bin/suricata -q 0 -c /etc/suricata/suricata.yaml --pidfile /var/run/suricata.pid -D
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill $MAINPID
-PrivateTmp=yes
-PrivateHome=yes
-PrivateSystem=yes
 
 [Install]
 WantedBy=multi-user.target

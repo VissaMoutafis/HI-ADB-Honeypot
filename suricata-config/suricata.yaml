@@ -13,7 +13,7 @@ vars:
 
 outputs:
   - console:
-      enabled: yes
+      enabled: no
   - fast:
       enabled: yes
       filename: fast.log
