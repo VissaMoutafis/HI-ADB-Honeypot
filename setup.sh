@@ -48,6 +48,8 @@ setup_suricata() {
     echo "Setting up iptables for interface br-android..."
     sudo iptables -I INPUT -i br-android -j NFQUEUE --queue-num 0
     sudo iptables -I OUTPUT -o br-android -j NFQUEUE --queue-num 0
+    sudo iptables -I INPUT -i br-internal -j NFQUEUE --queue-num 0
+    sudo iptables -I OUTPUT -o br-internal -j NFQUEUE --queue-num 0
 
     # # copy the IDS service file into /etc/systemd/system
     echo "Setting up suricata service..."

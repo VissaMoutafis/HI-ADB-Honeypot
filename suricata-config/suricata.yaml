@@ -8,7 +8,7 @@ listenmode: nfqueue
 
 vars:
   address-groups:
-    HOME_NET: "[192.168.22.0/24]"
+    HOME_NET: "[192.168.22.0/24, 192.167.22.0/24]"
     EXTERNAL_NET: "!$HOME_NET"
 
 outputs:
@@ -40,6 +40,8 @@ outputs:
             enabled: yes
             filename: eve.json
             append: yes
+            payload-printable: yes
+            payload: yes
   - tcp-data:
       enabled: yes
       append: yes

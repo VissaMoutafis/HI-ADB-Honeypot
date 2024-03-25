@@ -7,9 +7,9 @@ services:
     ports:
       - 5555:5555
     networks:
-      br-android:
+      br-public:
         ipv4_address: 192.168.21.2
-      br-internal:
+      br-android:
         ipv4_address: 192.168.22.2
     environment:
       - NGINX_ENTRYPOINT_QUIET_LOGS=1
@@ -26,7 +26,7 @@ services:
     environment:
       - ADBKEY=$(cat ~/.android/adbkey)
     networks:
-      br-internal:
+      br-android:
         ipv4_address: 192.168.22.3
     devices:
       - "/dev/kvm"
@@ -41,7 +41,7 @@ services:
     environment:
       - ADBKEY=$(cat ~/.android/adbkey)
     networks:
-      br-internal:
+      br-android:
         ipv4_address: 192.168.22.4
     devices:
       - "/dev/kvm"
@@ -69,21 +69,21 @@ networks:
   br-android:
     name: br-android
     driver: bridge
+    internal: true
     driver_opts:
       com.docker.network.bridge.name: br-android
     ipam:
       config:
-        - subnet: 192.168.21.0/24
+        - subnet: 192.168.22.0/24
 
-  br-internal:
-    name: br-internal
-    internal: true
+  br-public:
+    name: br-public
     driver: bridge
     driver_opts:
-      com.docker.network.bridge.name: br-internal
+      com.docker.network.bridge.name: br-public
     ipam:
       config:
-        - subnet: 192.168.22.0/24
+        - subnet: 192.168.21.0/24 
 
 
     
