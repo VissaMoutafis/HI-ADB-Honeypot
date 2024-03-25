@@ -8,8 +8,9 @@ listenmode: nfqueue
 
 vars:
   address-groups:
-    HOME_NET: "[192.168.22.0/24]"
-    EXTERNAL_NET: "!$HOME_NET"
+    PUBLIC_NET: "[192.168.21.0/24]"
+    INTERNAL_NET: "[192.168.22.0/24]"
+    EXTERNAL_NET: "![$INTERNAL_NET, $PUBLIC_NET]"
 
 outputs:
   - console:
@@ -36,10 +37,12 @@ outputs:
             append: yes
             payload-printable: yes
             payload: yes
-        - flow:
-            enabled: yes
-            filename: eve.json
-            append: yes
+        # - flow:
+        #     enabled: yes
+        #     filename: eve.json
+        #     append: yes
+        #     payload-printable: yes
+        #     payload: yes
   - tcp-data:
       enabled: yes
       append: yes
@@ -54,8 +57,9 @@ outputs:
 community-id: true
 community-id-seed: 0
 
-af-packet:
-  - interface: br-android
+# af-packet:
+#   - interface: br-android
+#   - interface: br-public
 
 defrag:
   memcap: 67108864

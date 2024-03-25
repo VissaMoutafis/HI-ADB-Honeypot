@@ -7,6 +7,8 @@ services:
     ports:
       - 5555:5555
     networks:
+      br-public:
+        ipv4_address: 192.168.21.2
       br-android:
         ipv4_address: 192.168.22.2
     environment:
@@ -67,11 +69,21 @@ networks:
   br-android:
     name: br-android
     driver: bridge
+    internal: true
     driver_opts:
       com.docker.network.bridge.name: br-android
     ipam:
       config:
         - subnet: 192.168.22.0/24
+
+  br-public:
+    name: br-public
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-public
+    ipam:
+      config:
+        - subnet: 192.168.21.0/24 
 
 
     
