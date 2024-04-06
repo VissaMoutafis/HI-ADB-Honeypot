@@ -22,7 +22,7 @@ emulator-1:
     hostname: <container hostname IMPORTANT>
     networks:
       # this is the internal net
-      - br-android
+      - br-internal
     depends_on:
       - nginx
 ```

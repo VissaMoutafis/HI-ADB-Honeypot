@@ -1,2 +1,2 @@
 # Custom rule to allow and alert inbound traffic on port any
-alert tcp any any -> any any (msg:"any:any <-> HOME_NET:any"; flow: established; priority:2; sid:1000001;)
+alert tcp any any -> any any (msg:"any:any -> any:any"; flow: established; priority:2; sid:1000001;)

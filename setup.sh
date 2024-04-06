@@ -44,10 +44,10 @@ setup_suricata() {
     echo "Copying rules to /etc/suricata/rules..."
     sudo cp -r ./suricata-config/rules /etc/suricata/
 
-    # set up iptables for interface br-android to forward in NFQUEUE
-    echo "Setting up iptables for interface br-android..."
-    sudo iptables -I INPUT -i br-android -j NFQUEUE --queue-num 0
-    sudo iptables -I OUTPUT -o br-android -j NFQUEUE --queue-num 0
+    # set up iptables for interface br-internal to forward in NFQUEUE
+    echo "Setting up iptables for interface br-internal..."
+    sudo iptables -I INPUT -i br-internal -j NFQUEUE --queue-num 0
+    sudo iptables -I OUTPUT -o br-internal -j NFQUEUE --queue-num 0
     sudo iptables -I INPUT -i br-public -j NFQUEUE --queue-num 0
     sudo iptables -I OUTPUT -o br-public -j NFQUEUE --queue-num 0
 
