@@ -10,11 +10,12 @@ vars:
   address-groups:
     PUBLIC_NET: "[192.168.21.0/24]"
     INTERNAL_NET: "[192.168.22.0/24]"
-    EXTERNAL_NET: "![$INTERNAL_NET, $PUBLIC_NET]"
+    HOME_NET: "[$INTERNAL_NET, $PUBLIC_NET]"
+    EXTERNAL_NET: "!$HOME_NET"
 
 outputs:
   - console:
-      enabled: no
+      enabled: yes
   - fast:
       enabled: yes
       filename: fast.log
@@ -37,12 +38,12 @@ outputs:
             append: yes
             payload-printable: yes
             payload: yes
-        # - flow:
-        #     enabled: yes
-        #     filename: eve.json
-        #     append: yes
-        #     payload-printable: yes
-        #     payload: yes
+        - flow:
+            enabled: yes
+            filename: eve.json
+            append: yes
+            payload-printable: yes
+            payload: yes
   - tcp-data:
       enabled: yes
       append: yes
