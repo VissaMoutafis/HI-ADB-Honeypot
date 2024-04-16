@@ -2,6 +2,13 @@
 
 This project implements a High-Intercation ADB Honeypot that can also be extended to other protocols. The project is meant to be deployed inside an Ubuntu Virtual Machine and is based on Docker containers. The honeypot is composed of an NGINX service that acts as a reverse proxy and load balancer, a Suricata IPS/IDS service, and several Google Android Emulator containers based on [official Google Images](https://github.com/google/android-emulator-container-scripts). The honeypot is designed to be easily extensible to support multiple protocols and honeypot instances.
 
+## Prerequisites
+- VM running any Linux distribution (developed on Ubuntu 22.04)
+- Docker and Docker compose
+- Suricata
+- NGINX server
+- At least 16GB of free disk (persistent) memory
+
 ## Install and run
 
 - Most of the technologies needed can be installed using the `setup.sh` script
