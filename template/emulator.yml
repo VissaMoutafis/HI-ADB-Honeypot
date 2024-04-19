@@ -1,0 +1,20 @@
+adb-honeypot:
+    image: us-docker.pkg.dev/android-emulator-268719/images/30-google-x64:30.1.2
+    container_name: android-container-1
+    ports:
+      - 5555:5555
+    environment:
+      - ADBKEY=$(cat ~/.android/adbkey)
+    devices:
+      - "/dev/kvm"
+
+adb-honeypot-2:
+    image: us-docker.pkg.dev/android-emulator-268719/images/30-google-x64:30.1.2
+    container_name: android-container-1
+    ports:
+      - 5555:5555
+    environment:
+      - ADBKEY=$(cat ~/.android/adbkey)
+    devices:
+      - "/dev/kvm"
+    

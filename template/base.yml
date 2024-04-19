@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+  nginx:
+    container_name: rev-proxy
+    image: nginx:latest
+    # ports:
+    #   - 5555:5555
+    networks:
+      br-public:
+        ipv4_address: 192.168.21.2
+      br-internal:
+        ipv4_address: 192.168.22.2
+    environment:
+      - NGINX_ENTRYPOINT_QUIET_LOGS=1
+      - NGINX_REAL_IP_HEADER=proxy_protocol
+      - NGINX_REAL_IP_RECURSIVE=on
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: always
+  restarter:
+    image: docker:cli
+    restart: unless-stopped
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        while true; do
+          sleep 1800
+          docker restart emulator-*;
+        done
+
+
+networks:
+  br-internal:
+    name: br-internal
+    driver: bridge
+    internal: true
+    driver_opts:
+      com.docker.network.bridge.name: br-internal
+    ipam:
+      config:
+        - subnet: 192.168.22.0/24
+
+  br-public:
+    name: br-public
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-public
+    ipam:
+      config:
+        - subnet: 192.168.21.0/24 
+
+
+    
+
+  
