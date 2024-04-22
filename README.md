@@ -19,47 +19,23 @@ This project implements a High-Intercation ADB Honeypot that can also be extende
 
 Our deployment framework supports multiple protocols and honeypot instances as long as they are wrapped in a docker image. The steps to add another honeypot are as follows:
 
-1. Configure the new service on `compose.yml` by adding a container as follows:
+1. Create an emulator yaml file, like the following and save it to a file, i.e. `emulator.yml`
 
 ```yaml
-emulator-1:
-    image: <image>
-    container_name: <container name IMPORTANT>
-    hostname: <container hostname IMPORTANT>
-    networks:
-      # this is the internal net
-      - br-internal
-    depends_on:
-      - nginx
+adb-honeypot:
+    image: us-docker.pkg.dev/android-emulator-268719/images/30-google-x64:30.1.2
+    container_name: android-container-1
+    ports:
+      - 5555:5555
+    environment:
+      - ADBKEY=$(cat ~/.android/adbkey)
+    devices:
+      - "/dev/kvm"
 ```
 
-2. Add the container in the restarter's container list to restart:
+2. Run the set-up-configs.py script, i.e. `python3 ./scripts/setup-compose.py ./template/emulator.yml `
 
-```yaml
-restarter:
-    image: docker:cli
-    ...
-    command:
-      - |
-        while true; do
-          sleep 1800
-          docker restart android-container-1 android-container-2 <container name>
-        done
-```
-
-3. Make sure to expose the necessary ports on the NGINX configuration in `compose.yml` and also add the reverse proxy configuration for your honeypot container service in `nginx.conf`
-
-```yaml
-    upstream new_emulator {
-        hash $binary_remote_addr consistent;
-
-        server <container hostname>:<PORT>;
-    }
-    server {
-        listen <PORT>;
-        proxy_pass new_emulator;
-    }
-```
+3. You are ready to go. Make any necessary changes to the nginx and compose files.
 
 ## File Structure Overview
 
