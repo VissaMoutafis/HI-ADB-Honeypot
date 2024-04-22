@@ -46,7 +46,7 @@ def build_nginx_config(emulators):
         config_str += f"\t\tproxy_pass emulators-{port};\n"    
         config_str += f"\t}}\n"
         
-        config_str += f"\tupstream  {{\n"
+        config_str += f"\tupstream emulators-{port} {{\n"
         config_str += f"\t\thash $binary_remote_addr consistent;\n"
         
         for emulator in port_idx[port]:
